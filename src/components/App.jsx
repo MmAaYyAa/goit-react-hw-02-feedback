@@ -1,8 +1,8 @@
 import { Component } from 'react';
 import Statistics from './Statistics/Statistics';
-import SectionTitle from './SectionTitle/SectionTitle';
-import CategoriesButton from './CategoriesButton/CategoriesButton';
-
+import Section from './Section/Section';
+import FeedbackOptions from './FeedbackOptions/FeedbackOptions';
+import Notification from './Notification/Notification';
 export class App extends Component {
   state = {
     good: 0,
@@ -17,27 +17,38 @@ export class App extends Component {
   countPositiveFeedbackPercentage = () => {
     const sum = this.countTotalFeedback();
 
-    const percentage = (this.state.good / sum) * 100;
+    const percentage = Math.round((this.state.good / sum) * 100);
     return percentage;
+  };
+
+  handleOptionsFeedback = ({ target }) => {
+    this.setState(prevState => ({
+      [target.textContent]: prevState[target.textContent] + 1,
+    }));
   };
 
   render() {
     return (
       <>
-        <SectionTitle title="Please leave feedback">
-          <CategoriesButton
-            categories={Object.keys(this.state)}
-          ></CategoriesButton>
-        </SectionTitle>
-
-        <Statistics
-          title="Statistics"
-          good={this.state.good}
-          neutral={this.state.neutral}
-          bad={this.state.bad}
-          total={this.countTotalFeedback}
-          positivePercentage={this.countPositiveFeedbackPercentage}
-        ></Statistics>
+        <Section title="Please leave feedback">
+          <FeedbackOptions
+            options={Object.keys(this.state)}
+            onLeaveFeedback={this.handleOptionsFeedback}
+          ></FeedbackOptions>
+        </Section>
+        <Section title="Statistics">
+          {this.countTotalFeedback() ? (
+            <Statistics
+              good={this.state.good}
+              neutral={this.state.neutral}
+              bad={this.state.bad}
+              total={this.countTotalFeedback()}
+              positivePercentage={this.countPositiveFeedbackPercentage()}
+            ></Statistics>
+          ) : (
+            <Notification message="There is no feedback"></Notification>
+          )}
+        </Section>
       </>
     );
   }

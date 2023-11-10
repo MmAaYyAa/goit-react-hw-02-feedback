@@ -1,6 +1,6 @@
 import { Component } from 'react';
 
-export default class SectionTitle extends Component {
+export default class Section extends Component {
   render() {
     const { title, children } = this.props;
     return (
