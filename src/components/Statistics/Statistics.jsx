@@ -20,7 +20,7 @@ export default class Statistics extends Component {
             <p>Total:{total}</p>
           </li>
           <li>
-            <p>PositiveFeedback: {percentage}</p>
+            <p>Positive feedback: {percentage}</p>
           </li>
         </ul>
       </>
